@@ -38,7 +38,7 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add a build_depend and a exec_depend tag for each package in MSG_DEP_SET
 ##   * If MSG_DEP_SET isn't empty the following dependency has been pulled in
 ##     but can be declared for certainty nonetheless:
-##     * add a exec_depend tag for "message_runtime"
+##     * add a exec_depend tag forf "message_runtime"
 ## * In this file (CMakeLists.txt):
 ##   * add "message_generation" and every package in MSG_DEP_SET to
 ##     find_package(catkin REQUIRED COMPONENTS ...)
@@ -52,7 +52,12 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
+<<<<<<< Updated upstream
    Raw_IMU.msg
+=======
+   Raw_IMU.msg 
+  
+>>>>>>> Stashed changes
  )
 
 ## Generate services in the 'srv' folder
@@ -72,7 +77,11 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
  generate_messages(
    DEPENDENCIES
+<<<<<<< Updated upstream
    geometry_msgs    
+=======
+   geometry_msgs
+>>>>>>> Stashed changes
    std_msgs
  )
 
@@ -106,10 +115,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES imu
-#  CATKIN_DEPENDS geometry_msgs message_generation message_runtime rospy std_msgs tf
-#  DEPENDS system_lib
+  #INCLUDE_DIRS include
+  LIBRARIES imu
+  CATKIN_DEPENDS geometry_msgs message_generation message_runtime rospy std_msgs tf
+  DEPENDS system_lib
 )
 
 ###########
@@ -163,7 +172,12 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
  catkin_install_python(PROGRAMS
+<<<<<<< Updated upstream
    scripts/my_python_script
+=======
+   #scripts/my_python_script
+   scripts/Client/imu_client_node.py
+>>>>>>> Stashed changes
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
