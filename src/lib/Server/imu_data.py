@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
 class IMU_DATA: 
 
 #Method that initializes everything to none so we can set a new value
-    def __inti__(self , time_startup = None, time_sync_in = None, ypr = None, attitude = None,orientation = None,angular_rate = None,
+    def __init__(self , time_startup = None, time_sync_in = None, ypr = None, attitude = None,orientation = None,angular_rate = None,
     accelaration = None,imu_accelaration = None, imu_rate = None, mag = None, temp = None,pres = None,dtime = None,dtheta = None,
     dvel = None, vpe_status = None,sync_in_cnt = None, sync_out_cnt = None, imu_dict_data = None):
 
@@ -27,23 +28,25 @@ class IMU_DATA:
 # if there is any problem when using one of the values , check the type. 
 
         if imu_dict_data:
-            self.prepare_data(imu_dict_data)
+         self.prepare_data(imu_dict_data)
 
-        def prepare_data(self, imu_dict: dict):
-            for key in vars(self).keys():
-                if key in imu_dict:
-                    setattr(self, key , imu_dict[key])
+    def prepare_data(self, imu_dict: dict):
+        for key in vars(self).keys():
+             if key in imu_dict:
+                setattr(self, key , imu_dict[key])
 
-        def clear_data(self):
-            for key in vars(self).keys():
-                setattr(self, key , None)
-
-        def get_all_var_names_ls():
-            return list(vars[IMU_DATA().keys()])
+    def clear_data(self):
+        for key in vars(self).keys():
+            setattr(self, key , None)
 
 
-        if __name__=='__main__':
-            print('IMU_DATA Test Variable Names:')
-            print(IMU_DATA.get_all_var_names_ls())
+    @staticmethod
+    def get_all_var_names_ls():
+        return list(vars(IMU_DATA()).keys())
+
+
+if __name__=='__main__':
+    print('IMU_DATA Test Variable Names:')
+    print(IMU_DATA.get_all_var_names_ls())
 
 
