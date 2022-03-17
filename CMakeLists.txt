@@ -52,12 +52,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-<<<<<<< Updated upstream
+
    Raw_IMU.msg
-=======
-   Raw_IMU.msg 
-  
->>>>>>> Stashed changes
  )
 
 ## Generate services in the 'srv' folder
@@ -77,11 +73,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
  generate_messages(
    DEPENDENCIES
-<<<<<<< Updated upstream
+
    geometry_msgs    
-=======
-   geometry_msgs
->>>>>>> Stashed changes
+
    std_msgs
  )
 
@@ -172,12 +166,11 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
  catkin_install_python(PROGRAMS
-<<<<<<< Updated upstream
-   scripts/my_python_script
-=======
+
+  
    #scripts/my_python_script
    scripts/Client/imu_client_node.py
->>>>>>> Stashed changes
+
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 

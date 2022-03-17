@@ -1,26 +1,80 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 
+
+# from geometry_msgs.msg import Vector3
+# from imu.msg import Raw_IMU
+
+from tf.transformations import euler_from_quaternion # todo lo que sea ROS tiene que ocurrir en el node!!
 class IMU_DATA: 
 
 #Method that initializes everything to none so we can set a new value
-    def __init__(self , time_startup = None, time_sync_in = None, ypr = None, attitude = None,orientation = None,angular_rate = None,
-    accelaration = None,imu_accelaration = None, imu_rate = None, mag = None, temp = None,pres = None,dtime = None,dtheta = None,
-    dvel = None, vpe_status = None,sync_in_cnt = None, sync_out_cnt = None, imu_dict_data = None):
+    def __init__(self , time_startup = None, time_sync_in = None, ypr_x = None, ypr_y = None, ypr_z = None, attitude_x = None, attitude_y = None, 
+    attitude_z = None, attitude_w = None, orientation_x = None, orientation_y = None, orientation_z=None, 
+    angular_rate_x = None, angular_rate_y = None,angular_rate_z = None ,accelaration_x = None,accelaration_y = None,accelaration_z = None,
+    imu_accelaration_x = None, imu_accelaration_y= None, imu_accelaration_z=None, imu_rate_x = None, imu_rate_y=None, imu_rate_z=None, mag_x = None, mag_y = None, mag_z = None, 
+    temp = None,pres = None,dtime = None, dtheta_x = None, dtheta_y = None, dtheta_z = None, dvel_x = None, dvel_y = None, dvel_z = None, vpe_status = None,sync_in_cnt = None, sync_out_cnt = None, imu_dict_data = None):
 
         self.time_startup: int = time_startup
         self.time_sync_in: int = time_sync_in
-        self.ypr: float = ypr
-        self.attitude: float = attitude
-        self.orientation: float = orientation
-        self.angular_rate: float = angular_rate
-        self.accelearation: float = accelaration
-        self.imu_accelaration: float = imu_accelaration
-        self.imu_rate: float = imu_rate 
-        self.mag: float = mag
+        self.ypr_x: float = ypr_x
+        self.ypr_y = ypr_y
+        self.ypr_z = ypr_z
+
+
+        self.attitude_x: float = attitude_x
+        self.attitude_y = attitude_y
+        self.attitude_z = attitude_z
+        self.attitude_w = attitude_w
+
+        self.attitude = [self.attitude_x, self.attitude_y, self.attitude_z, self.attitude_w]
+
+        self.orientation_x, self.orientation_y, self.orientation_w = list(euler_from_quaternion(self.attitude))# esto es una lista que se pasa como parametro.
+
+        angular_rate_x = angular_rate_x, # vector 3 so we need 3 values
+        angular_rate_y = angular_rate_y
+        angular_rate_z = angular_rate_z
+    
+
+        
+        
+        
+
+        self.accelaration_x : float=  accelaration_x
+        self.accelaration_y : float=  accelaration_y
+        self.accelaration_z : float=  accelaration_z
+
+
+        
+
+        self.imu_accelaration_x: float = imu_accelaration_x
+        self.imu_accelaration_y: float = imu_accelaration_y
+        self.imu_accelaration_z: float = imu_accelaration_z
+
+        self.imu_rate_x: float = imu_rate_x
+        self.imu_rate_y: float = imu_rate_y
+        self.imu_rate_z: float = imu_rate_z
+    
+
+        self.mag_x: float = mag_x
+        self.mag_y: float = mag_y
+        self.mag_z: float = mag_z
+        
+
         self.temp: float = temp
         self.pres: float = pres
+
         self.dtime: float = dtime
-        self.dtheta: float = dtheta
-        self.dvel: float = dvel
+
+
+        self.dtheta_x: float = dtheta_x
+        self.dtheta_y: float = dtheta_y
+        self.dtheta_z: float = dtheta_z
+
+
+        self.dvel_x: float = dvel_x
+        self.dvel_y: float = dvel_y
+        self.dvel_z: float = dvel_z
+        
+
         self.vpe_status: int = vpe_status
         self.sync_in_cnt: int = sync_in_cnt
         self.sync_out_cnt: int = sync_out_cnt
