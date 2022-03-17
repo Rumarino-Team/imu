@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # from vnproglib.python.vnpy import VnSensor
 
-from vnpy import VnSensor
+
 
 from flask import Flask, request, jsonify
 # from imu_connector import Test
