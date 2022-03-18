@@ -3,7 +3,7 @@
 # from geometry_msgs.msg import Vector3
 # from imu.msg import Raw_IMU
 
-from tf.transformations import euler_from_quaternion # todo lo que sea ROS tiene que ocurrir en el node!!
+# from tf.transformations import euler_from_quaternion # todo lo que sea ROS tiene que ocurrir en el node!!
 class IMU_DATA: 
 
 #Method that initializes everything to none so we can set a new value
@@ -27,11 +27,13 @@ class IMU_DATA:
 
         self.attitude = [self.attitude_x, self.attitude_y, self.attitude_z, self.attitude_w]
 
-        self.orientation_x, self.orientation_y, self.orientation_w = list(euler_from_quaternion(self.attitude))# esto es una lista que se pasa como parametro.
+        # self.orientation_x, self.orientation_y, self.orientation_w = list(euler_from_quaternion(self.attitude))# esto es una lista que se pasa como parametro.
 
-        angular_rate_x = angular_rate_x, # vector 3 so we need 3 values
-        angular_rate_y = angular_rate_y
-        angular_rate_z = angular_rate_z
+# NECESITO saber como es qe se ve lo de orientation para saber como se va a estructurar 
+
+        self.angular_rate_x = angular_rate_x, # vector 3 so we need 3 values
+        self.angular_rate_y = angular_rate_y
+        self.angular_rate_z = angular_rate_z
     
 
         
