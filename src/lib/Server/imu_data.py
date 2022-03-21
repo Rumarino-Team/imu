@@ -9,8 +9,8 @@ class IMU_DATA:
 #Method that initializes everything to none so we can set a new value
     def __init__(self , time_startup = None, time_sync_in = None, ypr_x = None, ypr_y = None, ypr_z = None, attitude_x = None, attitude_y = None, 
     attitude_z = None, attitude_w = None, orientation_x = None, orientation_y = None, orientation_z=None, 
-    angular_rate_x = None, angular_rate_y = None,angular_rate_z = None ,accelaration_x = None,accelaration_y = None,accelaration_z = None,
-    imu_accelaration_x = None, imu_accelaration_y= None, imu_accelaration_z=None, imu_rate_x = None, imu_rate_y=None, imu_rate_z=None, mag_x = None, mag_y = None, mag_z = None, 
+    angular_rate_x = None, angular_rate_y = None,angular_rate_z = None ,acceleration_x = None,acceleration_y = None,acceleration_z = None,
+    imu_acceleration_x = None, imu_acceleration_y= None, imu_acceleration_z=None, imu_rate_x = None, imu_rate_y=None, imu_rate_z=None, mag_x = None, mag_y = None, mag_z = None, 
     temp = None,pres = None,dtime = None, dtheta_x = None, dtheta_y = None, dtheta_z = None, dvel_x = None, dvel_y = None, dvel_z = None, vpe_status = None,sync_in_cnt = None, sync_out_cnt = None, imu_dict_data = None):
 
         self.time_startup: int = time_startup
@@ -25,7 +25,7 @@ class IMU_DATA:
         self.attitude_z = attitude_z
         self.attitude_w = attitude_w
 
-        self.attitude = [self.attitude_x, self.attitude_y, self.attitude_z, self.attitude_w]
+        
 
         # self.orientation_x, self.orientation_y, self.orientation_w = list(euler_from_quaternion(self.attitude))# esto es una lista que se pasa como parametro.
 
@@ -40,16 +40,16 @@ class IMU_DATA:
         
         
 
-        self.accelaration_x : float=  accelaration_x
-        self.accelaration_y : float=  accelaration_y
-        self.accelaration_z : float=  accelaration_z
+        self.acceleration_x : float=  acceleration_x
+        self.acceleration_y : float=  acceleration_y
+        self.acceleration_z : float=  acceleration_z
 
 
         
 
-        self.imu_accelaration_x: float = imu_accelaration_x
-        self.imu_accelaration_y: float = imu_accelaration_y
-        self.imu_accelaration_z: float = imu_accelaration_z
+        self.imu_acceleration_x: float = imu_acceleration_x
+        self.imu_acceleration_y: float = imu_acceleration_y
+        self.imu_acceleration_z: float = imu_acceleration_z
 
         self.imu_rate_x: float = imu_rate_x
         self.imu_rate_y: float = imu_rate_y

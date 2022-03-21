@@ -9,8 +9,11 @@ from Server.imu_connector import Test # Test is a subclass that contains the gen
 """Adding 'Server" to the beginning of the export to symbolize the parent directory fixes the import module error 
 whenever we run flask but it causes python3 interpreter to raise ModuleNotFound Error"""
 
-# vnsensor = VnSensor()
-# data = vnsensor.read_binary_output_1()
+# to switch from dummy to real one follow the checklist below:
+
+# go to imu_connector.py:
+# uncomment lines 17-18 (if u want to run real one)
+# comment line 143 and uncomment line 142
 app = Flask(__name__)
 
 testing = Test()
@@ -28,5 +31,6 @@ def home():
         return "method not supported"
 
 
-
+if __name__  == "__main__":
+    app.run(debug=True)
      # not sure if we can pass args to FLask methods
