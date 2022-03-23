@@ -1,12 +1,34 @@
 #!/usr/bin/env python3 
+"""Recommended Order to read and understand the IMU task:
 
-# from geometry_msgs.msg import Vector3
-# from imu.msg import Raw_IMU
+1. imu_data.py (YOU ARE HERE!) 
+2. imu_connetory.py 
+3. server.py
+4. imu_client_node.py
 
-# from tf.transformations import euler_from_quaternion # todo lo que sea ROS tiene que ocurrir en el node!!
+"""
+
 class IMU_DATA: 
+    """help on IMU_DATA CLASS:
+    
+    -> the purpose of this class is to be able to create a wrapper around the existing VnSensor class and its read methods that are used
+    to retrieve data from the IMU. For example, the VnSensor class has a method named 'read_angular_rate_measurements()' and our job is to
+    create a class that contains the attribute 'angular_rate' so it can be easier to obtain the desired attributes from a created object of 
+    the IMU_DATA class. In this case, by simply using dot notation we will be able to retrieve the angular_rate attribute of the IMU sensor
+    
+    -> In the case that we would like to retrieve an attribute that is NOT in the IMU_DATA class, we would simply add the desired attribute's
+    name and in imu_connector.py script you would have to add the 'read' method corresponding to the VnSensor class (this method is what retrieves
+    the actual value) and 'link' or 'make the connection' between the IMU_DATA object's attribute and the read method of the VnSensor
+    
+    Example of the link or connection described above:
+    
+    self.angular_rate_x = VnSensor().read_angular_rate_measurements().x
+    
+    -> In reality, this IMU_DATA class will be imported into the imu_connector.py script and there we will create another class that INHERITS from 
+    this IMU_DATA class. This allows us to separate the 'defining phase' of the class attributes (would be the class initializer or constructor) from
+    the 'linking' or 'connection' process that was described above."""
 
-#Method that initializes everything to none so we can set a new value
+# Method that initializes everything to none so we can set a new value once we perform the 'link' process to the VnSensor read method.
     def __init__(self , time_startup = None, time_sync_in = None, ypr_x = None, ypr_y = None, ypr_z = None, attitude_x = None, attitude_y = None, 
     attitude_z = None, attitude_w = None, orientation_x = None, orientation_y = None, orientation_z=None, 
     angular_rate_x = None, angular_rate_y = None,angular_rate_z = None ,acceleration_x = None,acceleration_y = None,acceleration_z = None,
@@ -27,17 +49,18 @@ class IMU_DATA:
 
         
 
-        # self.orientation_x, self.orientation_y, self.orientation_w = list(euler_from_quaternion(self.attitude))# esto es una lista que se pasa como parametro.
+       
 
-# NECESITO saber como es qe se ve lo de orientation para saber como se va a estructurar 
+
 
         self.angular_rate_x = angular_rate_x, # vector 3 so we need 3 values
         self.angular_rate_y = angular_rate_y
         self.angular_rate_z = angular_rate_z
     
 
-        
-        
+        self.orientation_x = orientation_x
+        self.orientation_y = orientation_y
+        self.orientation_z = orientation_z
         
 
         self.acceleration_x : float=  acceleration_x
@@ -86,16 +109,17 @@ class IMU_DATA:
         if imu_dict_data:
          self.prepare_data(imu_dict_data)
 
-    def prepare_data(self, imu_dict: dict):
-        for key in vars(self).keys():
-             if key in imu_dict:
-                setattr(self, key , imu_dict[key])
-
-    def clear_data(self):
-        for key in vars(self).keys():
-            setattr(self, key , None)
-
-
+    """Help on get_all_var_names method:
+    
+    -> this method utilizes the built-in python function named vars (which returns a dictionary of the attributes of the object and their value) 
+    and use .keys() to only return the keys of the dictionary (keys of the vars produced dictionary would be the attribute names) and then create
+    a list containing those attribute names.
+    
+    example output:
+    
+    [time_startup, time_sync_in, ypr_x, ypr_y ...]
+    
+    Note: '...' symbolizes the rest of the output (would be the rest of attributes of the IMU_DATA class"""
     @staticmethod
     def get_all_var_names_ls():
         return list(vars(IMU_DATA()).keys())

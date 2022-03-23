@@ -1,7 +1,13 @@
 #!/usr/bin/env python3 
-# # this file should be in python 3
-"""Here we will import the class and begin to generate random values while setting the class attributes to those random values"""
-# from imu_data import IMU_DATA  # this line only works when we run python3 in the terminal
+
+"""Recommended Order to read and understand the IMU task:
+
+1. imu_data.py
+2. imu_connetory.py (YOU ARE HERE!)
+3. server.py
+4. imu_client_node.py
+
+"""
 from Server.imu_data import IMU_DATA # this is the class that will be imported
 from random import randint, uniform
 from vnpy import VnSensor
@@ -11,20 +17,62 @@ from vnpy import VnSensor
 START_RANGE = 0
 END_RANGE = 100
 class Test(IMU_DATA): # this class inherites from the IMU_DATA
+    """Help on the Test class:
+    
+    -> The first key concept of this Test class is that it INHERITS from the IMU_DATA class (the IMU_DATA class comes from the imported IMU_DATA.py).
+    This inheritance is demonstrated with the declaration of the class: 
+
+        class Test(IMU_DATA):
+    
+        Having '(IMU_DATA)' tells Python that the Test class is a CHILD of the PARENT IMU_DATA class
+
+    -> The constructor or__init__ method of the Test class utilizes the super() Python function. This function allows us to directly access the 
+    constructor method of the parent class since it gives the child class access to that method. In a way, having the super() method would have the same
+    effect as copy pasting the IMU_DATA class constructor.
+    """
+    
     def __init__(self):
         super().__init__()
 
-        # self.vnsensor = VnSensor()
-        # self.vnsensor.connect('/dev/ttyUSB0', 115200) # docu dice que necesito port, baudrate as arguments
+
+        # notice how we do not write 'self.vnsensor = VnSensor()'!
+        
+        # The reason why we do NOT do this is because this would mean that Test class instances would have an attribute named 'vnsesnor'
+        # that holds a Class (VnSensor class in this case) as its value. The reason we want to avoid this is because in the imu_client_node.py
+        # script, all of the attributes of the Test class instances will be displayed as a json and objects of the type class are NOT JSON SERIALIZABLE.
+
+        # Since classes are not JSON serializable, Python will raise an error saying that it cannot convert a class into data that can be read from a 
+        # web server (which is the purpose of JSON)
+        
      
     """this function is an attempt to use the vnsensor object and to match the values of the sensor to the class
     the assignments are not done since further analysis of the API and its methods."""
     
     def generate_data(self): # reading real values here.
-        # self.ypr = Quaternion()
-        # vs = self.vnsensor
-        vs = VnSensor()
-        vs.connect('/dev/ttyUSB0', 115200)
+        """Help on the generate_data method:
+        
+        
+        -> This method performs the 'link' or 'connection' process between the VnSensor object and the Test class. Notice how 
+                all of the attributes being used for the Test class are attributes that were intialized in the IMU_DATA class 
+                constructor. The 'link' process occurs by setting the Test class instance's  attributes
+                to their respective read methods found in the VnSensor() class.
+        
+        -> The first thing that is performed is the definition of a VnSensor() object followed by connecting this object to the
+                computer's '/dev/ttyUSB0' port (this is a physical port in the computer that MUST be connected to an IMU in order to
+                receive values.) These values are received by the Test class utilizing the VnSensor 'read' methods (link or connection
+                process described above) [to view the ports, enter a linux terminal and write 'ls /dev/tty*', the USB0 port will only appear
+                if you have something connected to that port while executing the command in the terminal.]
+                
+        -> KEY CONCEPT: 
+            -> Some of the values received in from the 'read methods' of the VnSensor object are actually Vector3's or Quaternions.
+            In simplest terms: 
+            Vector3 is a data structure that holds 3 floats. These floats are accessed using '.x', '.y', '.z' depepnding on which 
+            values you want in 3D space (values being x,y,z)
+            
+            Quaternion is similar to a Vector3 but it holds 4 floats instead of 3. A quaternion uses the same dot notation with the addition
+            of the fourth valeus which is accessed with '.w'. (values are: x,y,z,w)"""
+        vs = VnSensor() 
+        vs.connect('/dev/ttyUSB0', 115200) # this function takes the port and baudrate (speed of data transmission) as arguments 
         # self.time_startup = randint(START_RANGE, END_RANGE)
         # self.time_sync_in = randint(START_RANGE, END_RANGE)
         
@@ -49,16 +97,16 @@ class Test(IMU_DATA): # this class inherites from the IMU_DATA
         self.acceleration_y = vs.read_acceleration_measurements().y
         self.acceleration_z = vs.read_acceleration_measurements().z
 
-        self.imu_acceleration_x = vs.read_imu_measurements().accel.x # se SUPONE QUE ESTO SEA UN VECTOR 3 (que tenga 3 valores ASK!!!!!!!111)
+        self.imu_acceleration_x = vs.read_imu_measurements().accel.x 
         self.imu_acceleration_y = vs.read_imu_measurements().accel.y
-        self.imu_acceleration_z = vs.read_imu_measurements().accel.z # es posible que en vez de x,y,z you have to use indexes in case that its a list.
+        self.imu_acceleration_z = vs.read_imu_measurements().accel.z 
 
          
-        self.imu_rate_x= vs.read_imu_measurements().gyro.x  #check if this is the rate
-        self.imu_rate_y= vs.read_imu_measurements().gyro.y # verificar si se hace esto mismo con imu_acceleration de arriba
+        self.imu_rate_x= vs.read_imu_measurements().gyro.x  
+        self.imu_rate_y= vs.read_imu_measurements().gyro.y 
         self.imu_rate_z= vs.read_imu_measurements().gyro.z
 
-        """Lo de mag yo lo hice y no se si se puede hacer lo de ponerle la x,y,z al final."""
+        
         self.mag_x = vs.read_imu_measurements().mag.x
         self.mag_y = vs.read_imu_measurements().mag.y
         self.mag_z = vs.read_imu_measurements().mag.z
@@ -69,7 +117,7 @@ class Test(IMU_DATA): # this class inherites from the IMU_DATA
         self.pres = vs.read_imu_measurements().pressure
         self.dtime = vs.read_delta_theta_and_delta_velocity().delta_time
 
-        """FALTA HACERLE LO DEL VECTOR3  CON DTHETA Y DVEL"""
+        
         self.dtheta_x = vs.read_delta_theta_and_delta_velocity().delta_theta.x
         self.dtheta_y = vs.read_delta_theta_and_delta_velocity().delta_theta.y
         self.dtheta_z = vs.read_delta_theta_and_delta_velocity().delta_theta.z
@@ -80,10 +128,14 @@ class Test(IMU_DATA): # this class inherites from the IMU_DATA
         # self.vpe_status = randint(START_RANGE, END_RANGE)
         # self.sync_in_cnt = randint(START_RANGE, END_RANGE)
         # self.sync_out_cnt = randint(START_RANGE, END_RANGE)
-        print(vars(self)) # printing all of the attributes of the object that was generated.
+        print(vars(self)) # DEBUGGING PURPOSES ONLY. printing all of the attributes of the object that was generated. 
     
     def generate_RANDOM_data(self): # generate dummy values here
-        # self.ypr = Quaternion()
+        """Help on the generate_RANDOM_data method:
+        
+        -> this method is to be ONLY used when you are NOT connected to the IMU. The purpose of this method is solely for testing
+        purposes since it generates random values from range 0-100. Notice how we do NOT have to create a VnSensor object since we never 
+        have to read from the IMU."""
         self.time_startup = randint(START_RANGE, END_RANGE)
         self.time_sync_in = randint(START_RANGE, END_RANGE)
         
@@ -146,7 +198,24 @@ class Test(IMU_DATA): # this class inherites from the IMU_DATA
         self.sync_in_cnt = randint(START_RANGE, END_RANGE)
         self.sync_out_cnt = randint(START_RANGE, END_RANGE)
 
-    def show_data(self): # this is the function that gets called from the server.
+    def show_data(self): # this is the method that gets called from the server.
+        """Help onthe show_data method:
+        
+        -> This is the method that gets called from the server. Inside this method, the generate_data method is called to perfrom the 'connection' process
+        between the Test class instance's attributes and the VnSensor read methods (view the help section on generate_data method for more information)
+
+        
+        
+        -> Notice how this method returns 'vars(self)'. This returns a dictionary that contains the attributes and their respective values. A dictionary
+        is the optimal data structure for this task since it is JSON Serializable (being JSON Serializable means that the object that's passsed can be 
+        converted into a string) and can be displayed as text by the web server. 
+
+        -> One final note: 
+            The generate_RANDOM_data method is commented out to allow for a fast transition between running the task with dummy values and running it with 
+            actual values read from the IMU.
+        
+        """
+        
         self.generate_data() 
         # self.generate_RANDOM_data() # comment this to run the real one
         return vars(self)
@@ -155,22 +224,5 @@ class Test(IMU_DATA): # this class inherites from the IMU_DATA
         return dir(self.vnsensor.read_delta_theta_and_delta_velocity())
     
     
-# make a vnsensor object with self.vnsensor = VnSensor()
-# connect that vnsensor object with self.vnsensor.connect(port, baudrate) 
-# then I can start reading values
 
-
-# obj = Test()
-# # obj.generate_data()
-# # print(obj.show_data())
-# # print("\nRunning it all again \n\n\n")
-# # obj.generate_data()
-# # print(obj.show_data())
-# print(obj.show_all_methods())
-
-
-# s = VnSensor()
-
-# s.connect('C0M1', 115200)
-# print(dir(s.read_yaw_pitch_roll_magnetic_acceleration_and_angular_rates()))
 
